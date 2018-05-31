@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::middleware('getOnly')->group(function () {
+// Route::middleware('getOnly')->group(function () {
     Route::resource('/skills', 'SkillsController');
 
     Route::resource('/institutions', 'InstitutionsController');
@@ -24,7 +24,7 @@ Route::middleware('getOnly')->group(function () {
     Route::resource('/positions', 'PositionsController');
 
     Route::resource('/projects', 'ProjectsController');
-});
+// });
 
 // Route::fallback(function(){
 //     return response()->json([
