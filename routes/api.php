@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,22 +15,20 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-// Route::middleware('getOnly')->group(function () {
-    Route::resource('/skills', 'SkillsController');
+Route::resource('/skills', 'SkillsController')->only(['index']);
 
-    Route::resource('/institutions', 'InstitutionsController');
+Route::resource('/institutions', 'InstitutionsController')->only(['index','show']);
 
-    Route::resource('/positions', 'PositionsController');
+Route::resource('/positions', 'PositionsController')->only(['index','show']);
 
-    Route::resource('/projects', 'ProjectsController');
-// });
+Route::resource('/projects', 'ProjectsController')->only(['index','show']);
 
-// Route::fallback(function(){
-//     return response()->json([
-//         'error' => [
-//                 'status' => '404',
-//                 'source' => ['pointer'],
-//                 'detail' => 'detail'
-//             ]
-//     ], 404);    
-// });
+Route::fallback(function(){
+    return response()->json([
+        'error' => [
+                'status' => '404',
+                'source' => [$_SERVER['REQUEST_URI']],
+                'detail' => 'Resource Not Found'
+            ]
+    ], 404);    
+})->name('fallback');

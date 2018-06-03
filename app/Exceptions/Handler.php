@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadMethodCallException;
+use Illuminate\Support\Facades\Route;
 
 class Handler extends ExceptionHandler
 {
@@ -48,9 +52,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // if ($exception instanceof ModelNotFoundException){
-        //         return Route::respondWithRoute('fallback');
-        // }
+        if ($exception instanceof MethodNotAllowedHttpException){
+            return response()->json([
+                'error' => [
+                        'status' => '405',
+                        'source' => [$_SERVER['REQUEST_URI']],
+                        'detail' => 'Method Not Allowed'
+                    ]
+            ], 405);
+        }
+        if ($exception instanceof ModelNotFoundException){
+                return Route::respondWithRoute('fallback');
+        }
         return parent::render($request, $exception);
     }
 }
